@@ -1,10 +1,8 @@
-package cn.losefeather.compose.home
+package cn.losefeather.compose.chat
 
 import androidx.compose.runtime.Composable
 
 @Composable
-fun HomePage() {
-
-
+fun CharPage() {
 
 }

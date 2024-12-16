@@ -50,9 +50,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.coil3.coil.compose)
+    implementation(libs.androidx.navigation.compose)
 
     implementation (libs.com.google.accompanist.accompanist.pager) // 请检查最新版本
     implementation (libs.accompanist.pager.indicators) // 可选，指示器
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
