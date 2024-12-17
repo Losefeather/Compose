@@ -29,16 +29,16 @@ fun BottomNavigationBar(index: Int = 0, onClick: (Int)->Unit  ,iconList: Mutable
             BottomNavigationItem(
                 icon = {
                     AsyncImage(model =
-                    if(selectedItem == index) {
+                    if(selectedItem == i) {
                         item.selectedIconUrl
                     }else{
                         item.unselectedIconUrl
                     }, contentDescription = item.info,)
                 },
-                label = { Text(item.info, color = if(selectedItem == index) Color.Black else Color.Gray, fontSize = if(selectedItem == index) 20.sp else 18.sp)},
-                selected = selectedItem == index,
-                onClick = { selectedItem = index
-                    onClick.invoke(index)
+                label = { Text(item.info, color = if(selectedItem == i) Color.Black else Color.Gray, fontSize = if(selectedItem == i) 20.sp else 18.sp)},
+                selected = selectedItem == i,
+                onClick = { selectedItem = i
+                    onClick.invoke(i)
                 }
             )
         }
