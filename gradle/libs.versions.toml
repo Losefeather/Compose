@@ -1,6 +1,7 @@
 [versions]
 agp = "8.7.2"
 coilComposeVersion = "3.0.4"
+constraintlayoutComposeVersion = "1.0.1"
 googleAccompanistPager = "0.24.13-rc"
 kotlin = "2.0.0"
 coreKtx = "1.13.1"
@@ -14,6 +15,7 @@ navigationComposeVersion = "2.5.3"
 
 [libraries]
 accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "googleAccompanistPager" }
+androidx-constraintlayout-compose = { module = "androidx.constraintlayout:constraintlayout-compose", version.ref = "constraintlayoutComposeVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComposeVersion" }
 coil3-coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coilComposeVersion" }

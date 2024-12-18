@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import cn.losefeather.compose.chat.CharPage
+import cn.losefeather.compose.discovery.DiscoveryPage
 import cn.losefeather.compose.home.HomePage
 import cn.losefeather.compose.mine.MinePage
 import cn.losefeather.compose.ui.component.BottomNavigationBar
@@ -34,12 +35,14 @@ class MainActivity : ComponentActivity() {
                             iconList = ArrayList<NavigationBarInfo>(
                             ).apply { 
                                 add(NavigationBarInfo("Home","",""))
+                                add(NavigationBarInfo("Discovery","",""))
                                 add(NavigationBarInfo("Chat","",""))
                                 add(NavigationBarInfo("Mine","",""))
                             },)
                     }) { innerPadding ->
                     NavHost(navController = navController, startDestination = HOME_PAGE, modifier = Modifier.padding(innerPadding)) {
                         composable(HOME_PAGE) { HomePage() }
+                        composable(DISCOVERY_PAGE) { DiscoveryPage() }
                         composable(CHAT_PAGE) { CharPage() }
                         composable(MINE_PAGE) { MinePage() }
                     }
@@ -54,9 +57,12 @@ class MainActivity : ComponentActivity() {
                 navController.navigate(HOME_PAGE)
             }
             1->{
-                navController.navigate(CHAT_PAGE)
+                navController.navigate(DISCOVERY_PAGE)
             }
             2->{
+                navController.navigate(CHAT_PAGE)
+            }
+            3->{
                 navController.navigate(MINE_PAGE)
             }
             else ->{
