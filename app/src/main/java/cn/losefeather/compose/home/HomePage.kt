@@ -10,6 +10,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.absoluteOffset
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -164,7 +165,7 @@ fun AnimatedVerticalCarousel(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.Start
     ) {
         // 使用 Box 来实现上下滚动效果
-        Box(modifier = Modifier.offset(y = offsetY.value.dp)) {
+        Box(modifier = Modifier.absoluteOffset(y = offsetY.value.dp)) {
             Text(text = texts[currentIndex], color = Color.Black)
         }
     }

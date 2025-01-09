@@ -14,7 +14,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -26,7 +25,15 @@ android {
                 "proguard-rules.pro"
             )
         }
+        create("benchmark") {
+            initWith(buildTypes.getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
+        }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -56,14 +63,20 @@ dependencies {
 
     implementation (libs.com.google.accompanist.accompanist.pager) // 请检查最新版本
     implementation (libs.accompanist.pager.indicators) // 可选，指示器
-    implementation( libs.androidx.constraintlayout.compose) // 请检查最新版本
+    implementation( libs.androidx.constraintlayout.compose)
+    implementation(libs.androidx.benchmark.macro)
+    implementation(libs.androidx.foundation.layout.android) // 请检查最新版本
+    implementation(libs.accompanist.swiperefresh)
 
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+
+
 }

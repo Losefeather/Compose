@@ -35,7 +35,7 @@ fun BottomNavigationBar(index: Int = 0, onClick: (Int)->Unit  ,iconList: Mutable
                         item.unselectedIconUrl
                     }, contentDescription = item.info,)
                 },
-                label = { Text(item.info, color = if(selectedItem == i) Color.Black else Color.Gray, fontSize = if(selectedItem == i) 20.sp else 18.sp)},
+                label = { Text(item.info, color = if(selectedItem == i) Color.Black else Color.Gray, fontSize = if(selectedItem == i) 13.sp else 11.sp)},
                 selected = selectedItem == i,
                 onClick = { selectedItem = i
                     onClick.invoke(i)
