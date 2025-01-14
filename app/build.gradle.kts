@@ -61,12 +61,13 @@ dependencies {
     //navigation
     implementation(libs.androidx.navigation.compose)
 
-    implementation (libs.com.google.accompanist.accompanist.pager) // 请检查最新版本
-    implementation (libs.accompanist.pager.indicators) // 可选，指示器
-    implementation( libs.androidx.constraintlayout.compose)
+    implementation(libs.accompanist.pager) // 请检查最新版本
+    implementation(libs.accompanist.pager.indicators) // 可选，指示器
+    implementation(libs.accompanist.swiperefresh)
+
+    implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.androidx.foundation.layout.android) // 请检查最新版本
-    implementation(libs.accompanist.swiperefresh)
 
 
     testImplementation(libs.junit)
@@ -76,7 +77,6 @@ dependencies {
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
 
 
 }
