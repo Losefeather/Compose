@@ -15,10 +15,12 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -69,13 +71,13 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomePage() {
-    MainScreen()
+    MainScreen2()
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewCustomConstraintLayout() {
-    CustomConstraintLayout()
+    MainScreen2()
 }
 
 @Composable
@@ -91,8 +93,24 @@ fun SwipeRefresh(isRefreshing: Boolean, onRefreshFunction: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ImageBanner() {
+fun PullRefresh(isRefreshing: Boolean, onRefreshFunction: () -> Unit) {
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = {
+        onRefreshFunction.invoke()
+    })
+    Box(Modifier.pullRefresh(pullRefreshState, true)) {
+        CustomConstraintLayout()
+        LazyColumn(Modifier.fillMaxSize()) {
+
+        }
+        PullRefreshIndicator(isRefreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
+
+    }
+}
+
+@Composable
+fun ImageBanner(modifier1: Modifier) {
     val images = listOf(
         "https://img-pre.ivsky.com/img/tupian/pre/201707/17/jinmendaqiao-012.jpg",
         "https://img-pre.ivsky.com/img/tupian/pre/201805/17/golden_gate_bridge-005.jpg"
@@ -115,9 +133,7 @@ fun ImageBanner() {
     }
 
     Column(
-        modifier = Modifier
-            .height(120.dp)
-            .fillMaxWidth(),
+        modifier = modifier1,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         HorizontalPager(
@@ -134,22 +150,6 @@ fun ImageBanner() {
                 contentDescription = stringResource(R.string.app_name),
             )
         }
-    }
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun PullRefresh(isRefreshing: Boolean, onRefreshFunction: () -> Unit) {
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, onRefresh = {
-        onRefreshFunction.invoke()
-    })
-    Box(Modifier.pullRefresh(pullRefreshState, true)) {
-        CustomConstraintLayout()
-        LazyColumn(Modifier.fillMaxSize()) {
-
-        }
-        PullRefreshIndicator(isRefreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
-
     }
 }
 
@@ -281,6 +281,7 @@ fun AnimatedVerticalCarousel(modifier: Modifier = Modifier) {
 fun MainScreen() {
     var isRefreshing by remember { mutableStateOf(false) }
     var offsetY by remember { mutableFloatStateOf(0f) }
+    var bannerHeight by remember { mutableStateOf(120.dp) } // Banner 的高度
 
     val coroutineScope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
@@ -300,11 +301,13 @@ fun MainScreen() {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-//                .verticalScroll(state = scrollState, enabled = true)
+            //              .verticalScroll(state = scrollState, enabled = true)
 //                .graphicsLayer { // Apply graphics layer for bounce effect
 //                    translationY = offsetY
 //                    Log.e("MainScreen", "MainScreen: graphicsLayer $translationY,    $offsetY")
 //                }
+            ,
+            state = rememberLazyListState()
         ) {
             item {
                 if (isRefreshing) {
@@ -319,7 +322,21 @@ fun MainScreen() {
                     }
                 }
                 CustomConstraintLayout()
-                ImageBanner()
+
+
+                // 处理 ImageBanner 的偏移和透明度
+                val scrollOffset = scrollState.value
+                val bannerOffset =
+                    if (scrollOffset < 0) 0.dp else (scrollOffset / 2).dp // 根据滚动值调整偏移
+                bannerHeight = (120.dp - bannerOffset).coerceAtLeast(0.dp) // 确保高度不小于 0
+
+                // ImageBanner
+                ImageBanner(
+                    modifier1 = Modifier
+                        .fillMaxWidth()
+                        .height(bannerHeight)
+                        .offset(y = -bannerOffset) // 根据滚动值调整位置
+                )
                 TabLayout()
             }
         }
@@ -342,13 +359,14 @@ fun TabContent() {
             .fillMaxSize()
             .background(Color.Blue)
     ) {
-        items(items.size) {
+        items(items.size) { index ->
             ListItem(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)
                     .clickable { /* Handle item click */ },
                 headlineContent = {
+                    Text(text = "Item #$index")
                 }
             )
         }
@@ -387,7 +405,7 @@ fun TabLayout() {
         }
         HorizontalPager(
             state = pagerState,
-            modifier = Modifier.weight(1f) // Fill the remaining space
+            modifier = Modifier.fillMaxSize() // Fill the remaining space
         ) { page ->
             TabContent()
         }
